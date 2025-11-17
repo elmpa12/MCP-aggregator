@@ -1,0 +1,5 @@
+fastapi
+uvicorn
+numpy
+ta-lib
+pydantic
