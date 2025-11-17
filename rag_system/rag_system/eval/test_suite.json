@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "tests": [
+    {
+      "question": "Como roda o WFO 2024 em 5m focado em ML?",
+      "ideal_answer": "Use o selector21.py com walk-forward mensal e ML habilitado. Exemplo:\npython3 selector21.py --symbol BTCUSDT --data_dir ./data --start 2024-01-01 --end 2024-12-31 \\\n  --exec_rules \"5m\" --run_ml --walkforward \\\n  --wf_train_months 3 --wf_val_months 1 --wf_step_months 1 \\\n  --ml_model_kind auto --ml_use_agg --ml_use_depth --ml_add_base_feats --ml_opt_thr\nIsso treina/valida janelas 3m/1m sequenciais e reporta métricas com fees/notional, conforme docs/PRODUCTION_TRADING_GUIDE.md e selector21.py."
+    },
+    {
+      "question": "O que o selector21 faz?",
+      "ideal_answer": "É o engine de backtest e execução com suporte a WFO (walk-forward), regras base e combos, pipeline de ML (XGB→RF→LogReg→NP-LogReg), gating por CVD/Depth, métricas com fees/notional, e integração com datasets parquet. Gera leaderboards, suporta 1m/5m/15m, e possui modo realista de execução com stops/TP intrabar e slippage."
+    },
+    {
+      "question": "Como o arena.py orquestra os agentes?",
+      "ideal_answer": "Não há arquivo arena.py no repo. A orquestração atual está documentada em docs/ORCHESTRATOR_README.md e implementada em claudex_orchestrator.py (fases: spec → implementação → validação → review), além do RAG (rag_system) e Auto Evolution."
+    }
+  ]
+}
+

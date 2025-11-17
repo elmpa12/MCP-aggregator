@@ -1,0 +1,112 @@
+{
+  "entities": [
+    {
+      "name": "selector21",
+      "type": "strategy",
+      "description": "Pipeline de walk-forward com ensemble ML (XGBoost, RF, LR) para trading BotScalp com otimização automática de features",
+      "documents": ["core/selectors/selector21.py", "BOTSCALP_SELECTOR21_FINAL.md", "ESTUDO_COMPLETO_SELECTOR.md", "SESSION_PROGRESS.md"],
+      "depends_on": ["auto_evolution_system", "data_monthly", "BacktestEngine", "FeatureEngineering"],
+      "feeds": ["evolution_loop", "validated_setups", "TradingStrategy"],
+      "tags": ["ML", "walk-forward", "strategy", "baseline", "xgboost", "trading"]
+    },
+    {
+      "name": "RAGv2",
+      "type": "system",
+      "description": "Sistema avançado de Retrieval-Augmented Generation com multi-agent architecture, Chain-of-Thought prompts e temporal weighting agressivo",
+      "documents": ["rag_system/core/advanced_rag_v2.py", "RAG_PHASE1_2_SUMMARY.md", "rag_system/CHANGELOG_PHASE1_2.md", "RAG_ADVANCED_GUIDE.md"],
+      "depends_on": ["VectorStore", "MCPMemory", "Claude", "CrossEncoder", "BotScalpBrain"],
+      "feeds": ["QueryInterface", "KnowledgeRetrieval", "context_agents"],
+      "tags": ["rag", "ai", "llm", "vector-search", "semantic-search", "chain-of-thought"]
+    },
+    {
+      "name": "VectorStore",
+      "type": "data",
+      "description": "ChromaDB-based vector embedding store com chunking determinístico para semantic search",
+      "documents": ["rag_system/core/vector_store.py"],
+      "depends_on": ["ChromaDB", "SentenceTransformers"],
+      "feeds": ["RAGv2", "SemanticSearch"],
+      "tags": ["vector-db", "embeddings", "chroma", "search", "deterministic"]
+    },
+    {
+      "name": "BacktestEngine",
+      "type": "system",
+      "description": "Motor de backtesting para estratégias de trading com walk-forward validation",
+      "documents": ["backtest_integration.py", "DADOS_WALKFORWARD_GUIA.md", "ANALISE_RESULTADOS_ML_2Y.md"],
+      "depends_on": ["MarketData", "TradingStrategy"],
+      "feeds": ["PerformanceMetrics", "selector21", "WalkForward"],
+      "tags": ["backtesting", "trading", "performance", "walk-forward", "validation"]
+    },
+    {
+      "name": "MCPMemory",
+      "type": "data",
+      "description": "Model Context Protocol memory system com async search para conversation history",
+      "documents": ["rag_system/core/mcp_direct.py", "CLI_MEMORY_SETUP.md", "CONFIGURACAO_CURSOR_MEMORY.md"],
+      "depends_on": ["MCP", "memory_server"],
+      "feeds": ["RAGv2", "ConversationHistory", "mem0"],
+      "tags": ["mcp", "memory", "context", "conversation", "async"]
+    },
+    {
+      "name": "BotScalpBrain",
+      "type": "system",
+      "description": "Sistema inteligente de feedback loop com pattern discovery e aprendizado contínuo (Phase 4)",
+      "documents": ["rag_system/utils/feedback_loop.py"],
+      "depends_on": ["RAGv2"],
+      "feeds": ["AdaptiveLearning", "PatternDiscovery"],
+      "tags": ["feedback", "learning", "intelligence", "optimization", "patterns"]
+    },
+    {
+      "name": "FeatureEngineering",
+      "type": "component",
+      "description": "Engenharia de features para ML trading (microstructure, technical indicators, deep features)",
+      "documents": ["compute_microstructure_features.py", "dl_heads_v8.py", "DL_INTEGRATION_PROPOSAL.md"],
+      "depends_on": ["MarketData", "PyTorch"],
+      "feeds": ["MLPipeline", "selector21", "DLIntegration"],
+      "tags": ["ml", "features", "trading", "microstructure", "indicators", "deep-learning"]
+    },
+    {
+      "name": "MarketData",
+      "type": "data",
+      "description": "Sistema de coleta e armazenamento de dados de mercado (klines, aggTrades, bookDepth) com formato parquet otimizado",
+      "documents": ["collect_market_data.py", "download_binance_turbo.py", "check_all_data.py"],
+      "depends_on": ["BinanceAPI"],
+      "feeds": ["BacktestEngine", "FeatureEngineering", "data_monthly"],
+      "tags": ["market-data", "binance", "klines", "order-book", "trades", "parquet"]
+    },
+    {
+      "name": "ASTChunker",
+      "type": "component",
+      "description": "Chunking inteligente por AST para Python preservando semantic boundaries (Phase 4)",
+      "documents": ["rag_system/utils/ast_chunker.py"],
+      "depends_on": ["ast", "VectorStore"],
+      "feeds": ["RAGv2", "CodeIndexing"],
+      "tags": ["ast", "chunking", "python", "semantic", "code-analysis"]
+    },
+    {
+      "name": "RAGTracer",
+      "type": "observability",
+      "description": "Sistema de tracing detalhado com OpenTelemetry-style spans para RAG pipeline (Phase 3)",
+      "documents": ["rag_system/utils/tracing.py"],
+      "depends_on": ["RAGv2"],
+      "feeds": ["Metrics", "Debugging"],
+      "tags": ["tracing", "observability", "metrics", "performance", "spans"]
+    },
+    {
+      "name": "auto_evolution_system",
+      "type": "engine",
+      "description": "Motor que intercepta eventos, roda análises dual-AI (Claude + GPT) e propõe patches automáticos",
+      "documents": ["auto_evolution_system.py", "SESSION_RECOVERY.md"],
+      "depends_on": ["claus_gpt_alliance", "selector21"],
+      "feeds": ["evolution_loop", "learning_cards"],
+      "tags": ["automation", "AI", "feedback-loop"]
+    },
+    {
+      "name": "serena",
+      "type": "tooling",
+      "description": "MCP/LSP para navegar e editar código com segurança (find_symbol, replace_symbol_body)",
+      "documents": ["SERENA_SETUP.md"],
+      "depends_on": ["language_servers"],
+      "feeds": ["code_reviews", "refactors"],
+      "tags": ["code", "lsp", "tool", "mcp"]
+    }
+  ]
+}

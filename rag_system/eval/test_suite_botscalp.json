@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "tests": [
+    {"question": "Como roda o WFO 2024 em 5m focado em ML?", "ideal_answer": "Use selector21.py com --run_ml e --walkforward (3m/1m). Exemplo: python3 selector21.py --symbol BTCUSDT --data_dir ./data --start 2024-01-01 --end 2024-12-31 --exec_rules \"5m\" --run_ml --walkforward --wf_train_months 3 --wf_val_months 1 --wf_step_months 1 --ml_model_kind auto --ml_use_agg --ml_use_depth --ml_add_base_feats --ml_opt_thr"},
+    {"question": "O que o selector21 faz?", "ideal_answer": "Engine de backtest/execução com WFO, regras base/combos, pipeline ML (XGB→RF→LogReg→NP-LogReg), gating por CVD/Depth, métricas com fees/notional e execução realista (stops intrabar, slippage)."},
+    {"question": "Como integrar Auto Evolution com o backtest?", "ideal_answer": "Usar with_auto_evolution(backtest_from_signals, ...) para disparar análise dual (Claude+GPT), salvar LEARNING_LOG.jsonl e retornar resultados normais."},
+    {"question": "Qual o fluxo DL → selector → tv_backend?", "ideal_answer": "DL produz sinais/features → selector21 consolida/avalia (WFO, leaderboards) → tv_backend lê leaderboards e scripts para orquestrar execuções/monitorar."},
+    {"question": "Como atualizar o vector store do RAG?", "ideal_answer": "ragv2 update (ingere MCP + arquivos locais via .ragconfig.json)."},
+    {"question": "Como rodar o painel de qualidade do RAG?", "ideal_answer": "ragv2 eval [--suite path] e ver resultados em rag_eval_runs/."},
+    {"question": "Como ativar autosave de chats?", "ideal_answer": "Serviços systemd user: cursor-memory-watch (contínuo) e cursor-memory-scan.timer (10 min)."},
+    {"question": "Como funciona o retrieval adaptativo?", "ideal_answer": "Roteia por intenção (code/config/explain/status), ajusta top_k, agentes vector/memory/recent/code e re‑ranking com cross-encoder."},
+    {"question": "Como configurar ingestão local por projeto?", "ideal_answer": "Criar .ragconfig.json com \"ingest_globs\" listando docs e código críticos."},
+    {"question": "Como verificar logs do RAG?", "ideal_answer": "ragv2 logs (últimos jsonl em rag_system/logs/rag_runs.jsonl)."},
+    {"question": "Como ativar recency forte?", "ideal_answer": "Adicionar timestamps reais nos docs do Memory e usar temporal boost (half-life≈7d) no temporal agent."},
+    {"question": "Qual comando para salvar uma nota rápida?", "ideal_answer": "msave \"texto\" (alias para cursor_memory_auto.py save)."},
+    {"question": "Como rodar o RAG em outro projeto?", "ideal_answer": "ragv2 --project <nome> --project-root <path> update|ask|eval"}
+  ]
+}
+

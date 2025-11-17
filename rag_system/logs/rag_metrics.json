@@ -1,0 +1,12 @@
+{
+  "total_runs": 10,
+  "cache_hits": 4,
+  "sum_confidence": 476.0,
+  "sum_elapsed_sec": 218.42,
+  "sum_context_chars": 180014,
+  "avg_confidence": 47.6,
+  "avg_elapsed_sec": 21.84,
+  "avg_context_chars": 18001,
+  "cache_hit_rate": 0.4,
+  "updated_at": "2025-11-14T01:18:28.498556Z"
+}

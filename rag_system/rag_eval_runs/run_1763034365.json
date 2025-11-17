@@ -1,0 +1,55 @@
+{
+  "timestamp": 1763034365,
+  "elapsed_sec": 54.4,
+  "model": "claude-3-5-sonnet-20241022",
+  "reranker": "cross-encoder/ms-marco-MiniLM-L-6-v2",
+  "vector_store": {
+    "total_documents": 3904,
+    "embedding_model": 384,
+    "collection_name": "scalp_knowledge"
+  },
+  "results": [
+    {
+      "question": "Como roda o WFO 2024 em 5m focado em ML?",
+      "ideal_answer": "Use o selector21.py com walk-forward mensal e ML habilitado. Exemplo:\npython3 selector21.py --symbol BTCUSDT --data_dir ./data --start 2024-01-01 --end 2024-12-31 \\\n  --exec_rules \"5m\" --run_ml --walkforward \\\n  --wf_train_months 3 --wf_val_months 1 --wf_step_months 1 \\\n  --ml_model_kind auto --ml_use_agg --ml_use_depth --ml_add_base_feats --ml_opt_thr\nIsso treina/valida janelas 3m/1m sequenciais e reporta métricas com fees/notional, conforme docs/PRODUCTION_TRADING_GUIDE.md e selector21.py.",
+      "system_answer": "# 🚀 Guia Completo: WFO 2024 em 5m Focado em Machine Learning\n\n## 📋 Configuração Básica\n\nPara rodar o Walk Forward Optimization (WFO) em 5 minutos para 2024 com foco em Machine Learning, utilize o seguinte comando base [Doc 9]:\n\n```bash\nsource /home/scalp/venv/bin/activate\nexport PYTHONPATH=\"/home/scalp:$PYTHONPATH\"\n\npython3 -m core.selectors.selector21 \\\n  --symbol BTCUSDT \\\n  --data_dir /home/scalp/data \\\n  --umcsv_root /home/scalp/data \\\n  --start 2024-01-01 \\\n  --end 2024-12-01 \\\n  --exec_rules 5m \\\n  --out_root \"runs/ml_wfo_2024_$(date +%Y%m%d_%H%M%S)\" \\\n  --run_base \\\n  --methods \"ema_crossover,macd_trend,boll_breakout,rsi_reversion,keltner_breakout,donchian_breakout,vwap_trend\" \\\n  --run_ml \\\n  --ml_model_kind \"ensemble\" \\\n  --ml_use_agg\n```\n\n## 🔍 Configurações Importantes\n\n### Parâmetros Chave\n- `--exec_rules 5m`: Foco exclusivo em timeframe de 5 minutos [Doc 8]\n- `--start 2024-01-01 --end 2024-12-01`: Período completo de 2024\n- `--ml_model_kind \"ensemble\"`: Utiliza modelo de ensemble para machine learning\n\n### Otimizações Recomendadas [Doc 21]\n\n1. Ajuste de Threshold:\n```bash\n--ml_thr_grid \"0.30,0.50,0.01\"  # Grid mais amplo para mais trades\n```\n\n2. Opções para Aumentar Trades:\n- Remover filtro de volume\n- Ativar modo long-only opcional\n- Baixar grid de threshold\n\n## 🧠 Estratégias ML Avançadas [Doc 13]\n\n### Eficiência de Treinamento\n- Use AMP com dtype adequado\n- Ative `channels_last` para CNNs\n- Habilite gradient checkpointing\n- Mantenha clipping de gradiente\n- Use weight_decay no AdamW\n\n## ⚠️ Possíveis Problemas e Soluções\n\n1. Carregamento de Dados [Doc 1, Doc 14]\n- Verifique se os arquivos de 2024 estão corretamente localizados\n- Consolide dados de diferentes estruturas de diretório\n\n2. Tratamento de Erros [Doc 11]\n- Corrija implementações de modelos para compatibilidade scikit-learn\n- Trate casos de probabilidades NaN\n\n## 📊 Métricas e Monitoramento [Doc 18]\n\n- Incluir PR-AUC/AUC no log\n- Monitorar \"positives rate\" e \"entropy\"\n- Implementar early stopping\n- Salvar checkpoints do modelo\n\n## 🔧 Dicas Finais\n\n- Use `--max_hold 480` para ajustar tempo máximo de posição\n- Experimente diferentes configurações de threshold\n- Monitore a densidade de trades gerados\n\n## 🚨 Observações Importantes\n- Os resultados podem variar\n- Faça múltiplos testes e ajustes\n- Valide os resultados em diferentes períodos\n\n🔬 **Recomendação Final**: Execute múltiplas variações, compare resultados e refine continuamente sua estratégia.",
+      "confidence": 82.5,
+      "scores": {
+        "precisao": 1.32,
+        "uso_contexto": 10.0,
+        "alucinacao": 7.0,
+        "completude": 4.68
+      }
+    },
+    {
+      "question": "O que o selector21 faz?",
+      "ideal_answer": "É o engine de backtest e execução com suporte a WFO (walk-forward), regras base e combos, pipeline de ML (XGB→RF→LogReg→NP-LogReg), gating por CVD/Depth, métricas com fees/notional, e integração com datasets parquet. Gera leaderboards, suporta 1m/5m/15m, e possui modo realista de execução com stops/TP intrabar e slippage.",
+      "system_answer": "# Análise Detalhada do selector21\n\n## 🔍 Visão Geral\nO selector21 parece ser um módulo complexo de seleção e processamento de dados, provavelmente relacionado a sistemas de machine learning e trading bot.\n\n## 🛠 Características Principais\n\n### 1. Processamento de Dados\n- Lida com importação e manipulação de dados\n- Trabalha com diferentes conjuntos de dados, possivelmente de trading\n- Suporta processamento de dados de múltiplos anos (referências a 2024/2025)\n\n### 2. Machine Learning\n- Implementa modelos customizados de ML\n- Possui uma classe `_NPLR` (Nonlinear Probabilistic Logistic Regression) [Doc 12]\n- Integra técnicas avançadas como:\n  - Calibração de classificadores\n  - Treinamento com diferentes métodos\n  - Suporte a GPU/CPU\n\n### 3. Arquitetura Técnica\n- Localizado em `/home/scalp/core/selectors/selector21.py`\n- Múltiplos arquivos e configurações\n- Suporta pipelines de workflow complexos\n\n## 🚨 Problemas Conhecidos\n- Erros de treinamento com modelos customizados\n- Possíveis problemas de calibração de classificadores\n- Necessidade de ajustes no pipeline de machine learning\n\n## 💻 Exemplo de Código Problemático\n```python\nclass _NPLR(_BaseModel):\n    def __init__(self):\n        # Implementação incompleta\n        pass\n    \n    def fit(self, X, y):\n        # Método não completamente implementado\n        for _ in range(self.epochs):\n            p = self._sig(X @ self.w + self.b)\n```\n\n## 🔬 Recomendações\n- Completar implementação do `_NPLR`\n- Garantir compatibilidade com scikit-learn\n- Implementar métodos de calibração adequados\n\n## 📊 Referências Documentais\n- [Doc 12]: Detalhes técnicos sobre problemas de implementação\n- [Doc 13]: Confirmação de estrutura de pipeline\n- [Doc 14-20]: Evidências de estrutura e configurações\n\n## ⚠️ Limitações Observadas\n- Possível geração de modelos com valores NaN\n- Problemas de integração entre diferentes componentes\n- Necessidade de ajustes no parsing de modelos\n\n### 🎯 Conclusão\nO selector21 é um módulo técnico complexo para processamento de dados e machine learning, com potencial significativo, mas que requer refinamentos na implementação.",
+      "confidence": 66.0,
+      "scores": {
+        "precisao": 0.76,
+        "uso_contexto": 10.0,
+        "alucinacao": 7.0,
+        "completude": 2.67
+      }
+    },
+    {
+      "question": "Como o arena.py orquestra os agentes?",
+      "ideal_answer": "Não há arquivo arena.py no repo. A orquestração atual está documentada em docs/ORCHESTRATOR_README.md e implementada em claudex_orchestrator.py (fases: spec → implementação → validação → review), além do RAG (rag_system) e Auto Evolution.",
+      "system_answer": "# 🤖 Orquestração de Agentes no arena.py\n\n## 📍 Visão Geral da Orquestração\n\nBaseado nos documentos analisados, a orquestração dos agentes no `arena.py` parece ser um processo complexo de coordenação entre múltiplos agentes de IA ([Doc 6]):\n\n### 🔑 Agentes Principais\n- **Ernest** (GPT-5 / OpenAI) - Engenheiro-chefe pragmático\n- **Garapa** (Claude 3.7 Sonnet / Anthropic) - Arquiteto crítico\n- **Alfred** (Coder) - Programador que gera patches e código executável\n\n## 🚀 Estratégias de Orquestração Identificadas\n\n### 1. Paralelização de Execução\n[Doc 8] e [Doc 9] indicam uma evolução para execução paralela dos agentes:\n\n- **Objetivo**: Reduzir tempo de debate de 6s/round para 3s/round\n- **Técnica**: Criação de módulo `llm_async.py` para chamadas assíncronas\n- **Benefício**: Speedup 2x na execução\n\n#### Exemplo de Estrutura Async Planejada:\n```python\nimport asyncio\nimport aiohttp\n\nasync def execute_agent(agent_name, prompt):\n    # Execução paralela de agentes\n    async with aiohttp.ClientSession() as session:\n        # Lógica de chamada assíncrona para cada agente\n        pass\n```\n\n### 2. Modos de Operação\n[Doc 16] revela uma estratégia de \"Dual-Mode\" para Alfred:\n- **Modo Código**: Execução técnica de código\n- **Modo Síntese**: Consolidação de consenso entre Ernest e Garapa\n\n### 3. Configuração Dinâmica\n- Suporte para múltiplas APIs (OpenAI, Anthropic)\n- Configuração flexível de agentes\n- Tratamento de credenciais e limites de API\n\n## 🔍 Limitações Atuais\n- Dependência de APIs externas\n- Necessidade de gerenciamento de créditos\n- Complexidade na sincronização de agentes\n\n## 💡 Pontos de Melhoria\n1. Implementar robust error handling\n2. Adicionar logging detalhado\n3. Criar mecanismo de fallback entre modelos\n4. Otimizar consumo de tokens\n\n## ⚠️ Observações Importantes\n- A orquestração está em constante evolução\n- Documentação sugere múltiplas iterações de design\n- Foco em performance e flexibilidade\n\n---\n\n🔬 **Nota Técnica**: A implementação atual parece ser um trabalho em progresso, com melhorias constantes no sistema de orquestração de agentes.",
+      "confidence": 82.5,
+      "scores": {
+        "precisao": 0.58,
+        "uso_contexto": 10.0,
+        "alucinacao": 7.0,
+        "completude": 3.23
+      }
+    }
+  ],
+  "summary": {
+    "avg_precisao": 0.89,
+    "avg_uso_contexto": 10.0,
+    "avg_alucinacao": 7.0,
+    "avg_completude": 3.53
+  }
+}
